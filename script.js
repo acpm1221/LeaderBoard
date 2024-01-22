@@ -1,102 +1,148 @@
-document.querySelector("form").addEventListener("submit", (e)=>{
-    e.preventDefault();
+let array = [];
 
-    const firstName = e.target.children[0].value,
-     lastName = e.target.children[1].value,
-     country = e.target.children[2].value,
-     score = e.target.children[3].value;
-     errorPrompter = document.querySelector(".main_error-prompter");
+function addPlayer(event) {
+    event.preventDefault();
 
-     errorPrompter.style.display = "none";
+    const playerList = document.getElementById('player-list');
 
-     if(firstName === '' || lastName === '' || country === '' || score === '')
-     return (errorPrompter.style.display = "block");
+    const firstName = document.getElementById('first-name').value;
+    const lastName = document.getElementById('last-name').value;
+    const country = document.getElementById('country').value;
 
-     const scoreboardContainer = document.querySelector(".main_scoreboard-wrapper")
-     const scoreboardElement = document.createElement("div");
+    let score = parseInt(document.getElementById('score').value, 10);
 
-     scoreboardElement.classList.add("main_scoreboard");
+    const player = {
+        name: `${firstName} ${lastName}`,
+        country: country,
+        score: score
+    };
 
-     scoreboardElement.innerHTML = `
-     <div>
-        <p class="main_player-name">${firstName} ${lastName}</p>
-        <p class="main_time-stamp">${generateDateAndTime()}</p>
-    </div>
-    <p class="main_player-country">${country}</p>
-        <p class="main_player-score">${score}</p>
-        <div class="main_scoreboard-btn-container">
-            <button>&#x1f5d1;</button>
-            <button>+5</button>
-            <button>-5</button>
-    </div>
-     `
-     scoreboardContainer.appendChild(scoreboardElement);
-     sortScoreBoard()
-     activateBtnEventListener()
-})
+    array.push(player);
 
-function activateBtnEventListener(){
-    document.querySelectorAll(".main_scoreboard-btn-container").forEach((el)=>{
-        el.addEventListener("click", (e)=>{
-            let textContent = e.target.textContent;
-            console.log(textContent);
-            let scorePlayer = e.target.parentElement.parentElement.children[2];
-            console.log(scorePlayer);
+    const liEl = document.createElement('div');
+    const nameContent = document.createElement('div');
+    const date = document.createElement('span');
+    const countryContent = document.createElement('div');
+    const currentScore = document.createElement('div');
+    const buttonElement = document.createElement('button');
+    const increase = document.createElement('button');
+    const decrease = document.createElement('button');
 
-            if(textContent.length > 2) return;
+    date.classList.add('span')
 
-            console.log(e.target.parentElement.parentElement);
-            console.log("hi");
+    currentScore.innerText = score;
+    countryContent.innerText = country.toUpperCase();
+    nameContent.innerText = player.name.toUpperCase();
+    date.innerText = new Date();
+    nameContent.style.display = 'flex';  // Add this line
+    nameContent.style.flexDirection = 'column';
 
-            if(textContent === '🗑')
-            return e.target.parentElement.parentElement.remove();
 
-            scorePlayer.textContent = parseInt(scorePlayer.textContent) + parseInt(textContent);
+    increase.innerText = '+5';
+    increase.classList.add('action-button'); // New class for increase button
 
-            sortScoreBoard()
-        
+    decrease.innerText = '-5';
+    decrease.classList.add('action-button'); // New class for decrease button
+
+    increase.addEventListener("click", function (e) {
+        player.score += 5;
+        player.score = Math.min(player.score, 100);
+        currentScore.textContent = player.score;
+    });
+
+    decrease.addEventListener("click", function (e) {
+        player.score = Math.max(0, player.score - 5);
+        currentScore.textContent = player.score;
+    });
+
+    buttonElement.innerText = 'Delete';
+
+    buttonElement.addEventListener("click", function (e) {
+        const index = array.indexOf(player);
+        if (index !== -1) {
+            array.splice(index, 1);
+            refreshList();
+        }
+    });
+
+    liEl.appendChild(nameContent);
+    nameContent.appendChild(date);
+    // liEl.appendChild(date);  // Move this line here
+    liEl.appendChild(countryContent);
+    liEl.appendChild(currentScore);
+    liEl.appendChild(buttonElement);
+    liEl.appendChild(increase);
+    liEl.appendChild(decrease);
+
+    liEl.classList.add('player-list1');
+    buttonElement.classList.add('delete-button');
+    playerList.append(liEl);
+
+    refreshList();
+}
+
+function refreshList() {
+    const playerList = document.getElementById('player-list');
+    array.sort((player1, player2) => player2.score - player1.score);
+    playerList.innerHTML = '';
+
+    for (let index = 0; index < array.length; index++) {
+        const player = array[index];
+
+        const liEl = document.createElement('div');
+        const nameContent = document.createElement('div');
+        const date = document.createElement('span');
+        const countryContent = document.createElement('div');
+        const currentScore = document.createElement('div');
+        const buttonElement = document.createElement('button');
+        const increase = document.createElement('button');
+        const decrease = document.createElement('button');
+        date.classList.add('span')
+
+        currentScore.innerText = player.score;
+        countryContent.innerText = player.country.toUpperCase();
+        nameContent.innerText = player.name.toUpperCase();
+        date.innerText = new Date();
+        nameContent.style.display = 'flex';  // Add this line
+        nameContent.style.flexDirection = 'column';
+
+        increase.innerText = '+5';
+        increase.classList.add('action-button'); // New class for increase button
+
+        decrease.innerText = '-5';
+        decrease.classList.add('action-button'); // New class for decrease button
+
+        increase.addEventListener("click", function (e) {
+            player.score += 5;
+            player.score = Math.min(player.score, 100);
+            currentScore.textContent = player.score;
         });
-    });
-}
 
-activateBtnEventListener()
+        decrease.addEventListener("click", function (e) {
+            player.score = Math.max(0, player.score - 5);
+            currentScore.textContent = player.score;
+        });
 
-function sortScoreBoard(){
-    let scoreboardContainer = document.querySelector(".main_scoreboard-wrapper");
+        buttonElement.innerText = 'Delete';
 
-    let scoreBoards = document.querySelectorAll(".main_scoreboard");
+        buttonElement.addEventListener("click", function (e) {
+            const index = array.indexOf(player);
+            if (index !== -1) {
+                array.splice(index, 1);
+                refreshList();
+            }
+        });
 
-    let elementsInArray = [];
-    scoreBoards.forEach((el)=> elementsInArray.push(el));
+        liEl.appendChild(nameContent);
+        nameContent.appendChild(date);
+        liEl.appendChild(countryContent);
+        liEl.appendChild(currentScore);
+        liEl.appendChild(buttonElement);
+        liEl.appendChild(increase);
+        liEl.appendChild(decrease);
 
-    console.log(elementsInArray);
-    let sortedElements = elementsInArray.map((el)=>{
-        return el;
-    })
-    .sort((a,b)=>{
-        let numA = parseInt(a.children[2].textContent),
-        numB = parseInt(b.children[2].textContent)
-
-        if(numA > numB) return -1;
-        if(numA < numB) return 1;
-    });
-
-    sortedElements.forEach((el)=>{
-        scoreboardContainer.append(el);
-    })
-}
-
-function generateDateAndTime(){
-    let dateObject = new Date();
-    // console.log(dateObject);
-    let month = dateObject.toLocaleString("default", {month:"long"})
-    // console.log(month);
-    day = dateObject.getDate(),
-    year = dateObject.getFullYear(),
-    time = dateObject.toLocaleTimeString().slice(0,8);
-    // console.log(time);
-
-    let generateResult = `${month} ${day}: ${year} ${time}`
-
-    return generateResult;
+        liEl.classList.add('player-list1');
+        buttonElement.classList.add('delete-button');
+        playerList.append(liEl);
+    }
 }

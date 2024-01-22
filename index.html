@@ -1,67 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LeaderBoard</title>
-    <link rel="stylesheet" href="./style.css">
-<script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=gwX2nw6jKxaeCgsJYLOMP11kQGOaPqGrfSLCd4QchMfWqJl3sQET-jgAPin_7PosNsVP7PW4027IpmX2m68mlA" charset="UTF-8"></script><link rel="stylesheet" crossorigin="anonymous" href="https://gc.kis.v2.scr.kaspersky-labs.com/E3E8934C-235A-4B0E-825A-35A08381A191/abn/main.css?attr=aHR0cHM6Ly9ha2hpbC0wNi5naXRodWIuaW8vbGVhZGVyQm9hcmQv"/></head>
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+</head>
+
 <body>
+
     <main>
-        <h1 class="main_title">LeaderBoard</h1>
-        <form class="main_form">
-            <input type="text" placeholder="First Name">
-            <input type="text" placeholder="Last Name">
-            <input type="text" placeholder="Country">
-            <input type="number" placeholder="Player Score">
-            <button class="main_form-submit-btn">Add Player</button>
+        <h1> LeaderBoard </h1>
+        <form onsubmit="addPlayer(event)">
+            <div class="container">
+
+                <div>
+                    <label for="first-name"></label>
+                    <input id="first-name" name="first-name" type="text" placeholder="First Name" required />
+                </div>
+
+                <div>
+                    <label for="last-name"></label>
+                    <input id="last-name" type="text" placeholder="Last Name" required />
+                </div>
+
+                <div>
+                    <label for="country"></label>
+                    <input id="country" type="text" placeholder="Country" required />
+                </div>
+
+                <div>
+                    <label for="score"></label>
+                    <input id="score" type="number" placeholder="Score" max="100" min="0" required />
+                </div>
+
+                <button type="submit">Add Player</button>
+            </div>
         </form>
-        <p class="main_error-prompter">All fields are required</p>
 
-        <div class="main_scoreboard-wrapper">
-            <div class="main_scoreboard">
-                <div>
-                    <p class="main_player-name">Anmol Kumar</p>
-                    <p class="main_time-stamp">Jan 2023: 09:24:44</p>
-                </div>
-                <p class="main_player-country">India</p>
-                <p class="main_player-score">85</p>
-                <div class="main_scoreboard-btn-container">
-                    <button>&#x1f5d1;</button>
-                    <button>+5</button>
-                    <button>-5</button>
-                </div>
-            </div>
-
-            <div class="main_scoreboard">
-                <div>
-                    <p class="main_player-name">abhi</p>
-                    <p class="main_time-stamp">Feb 2023: 19:24:44</p>
-                </div>
-                <p class="main_player-country">India</p>
-                <p class="main_player-score">95</p>
-                <div class="main_scoreboard-btn-container">
-                    <button>&#x1f5d1;</button>
-                    <button>+5</button>
-                    <button>-5</button>
-                </div>
-            </div>
-
-            <div class="main_scoreboard">
-                <div>
-                    <p class="main_player-name">Rohit Sharma</p>
-                    <p class="main_time-stamp">Mar 2023: 10:24:04</p>
-                </div>
-                <p class="main_player-country">India</p>
-                <p class="main_player-score">70</p>
-                <div class="main_scoreboard-btn-container">
-                    <button>&#x1f5d1;</button>
-                    <button>+5</button>
-                    <button>-5</button>
-                </div>
-            </div>
-        </div>
+        <div id="player-list"></div>
     </main>
-    <script src="./script.js"></script>
+    <script src="script.js"></script>
 </body>
+
 </html>
